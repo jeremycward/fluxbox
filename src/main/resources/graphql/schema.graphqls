@@ -1,0 +1,31 @@
+
+schema {
+    query: Query
+}
+type Query {
+    flatGraph: FlatGraph
+}
+type FlatGraph {
+    edges: [Edge]!
+    vertices: [Vertex]!
+}
+type Vertex {
+  id : ID!
+  name: String!
+  caption: String!
+  attributes: [Attribute]!
+}
+type Edge {
+    id: ID!
+    name: String!
+    caption: String!
+    from: ID!
+    to: ID!
+    attributes: [Attribute]!
+
+}
+type Attribute {
+    name: String
+    value: String
+    type: String
+}
