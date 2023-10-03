@@ -15,13 +15,29 @@ public class SampleGraphs {
 
                 Vertex jeremy = new Vertex(UUID.randomUUID().toString(),"Jeremy Ward","Jezza", List.of(Attribute.aStringAttribute("SEX","M")));
                 Vertex sheila = new Vertex(UUID.randomUUID().toString(),"Sheila Hanly","Shezza", List.of(Attribute.aStringAttribute("SEX","F")));
+                Vertex harry = new Vertex(UUID.randomUUID().toString(),"Harry","Harry", List.of(Attribute.aStringAttribute("Species","Dog")));
                 Edge edge = Edge.anEdge()
                         .withId(UUID.randomUUID().toString())
                         .withNameAndCaption("marriage","married to")
                         .from(jeremy)
                         .to(sheila).build();
 
-                return new FlatGraph(List.of(jeremy,sheila),List.of(edge));
+                Edge edge2 = Edge.anEdge()
+                        .withId(UUID.randomUUID().toString())
+                        .withNameAndCaption("owns","hasPet")
+                        .from(jeremy)
+                        .to(harry).build();
+
+                Edge edge3 = Edge.anEdge()
+                        .withId(UUID.randomUUID().toString())
+                        .withNameAndCaption("owns","hasPet")
+                        .from(sheila)
+                        .to(harry).build();
+
+
+
+
+                return new FlatGraph(List.of(jeremy,sheila,harry),List.of(edge,edge2,edge3));
 
             }
 

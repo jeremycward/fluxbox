@@ -1,0 +1,119 @@
+package org.fluxbox.spring.examples;
+
+import cellgraph.MktDataIdentifier;
+import cellgraph.mutations.MktDataCapture;
+import org.apache.commons.lang3.tuple.Pair;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+
+public class MarketCaptureFluxGenerator {
+
+    private final Duration interval;
+
+    private final Predicate<Pair<Duration, Integer>> stopCondidtion;
+
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
+
+    private final MarketCaptureGenerator marketCaptureGenerator;
+    private final Flux<MktDataCapture> flux;
+    private final Sinks.Many<MktDataCapture> mktCaptures = Sinks.many().multicast().onBackpressureBuffer();
+
+    private volatile boolean completed = false;
+
+    private final List<MktDataCapture> sent = new ArrayList<>();
+
+
+    private MarketCaptureFluxGenerator(MarketCaptureGenerator marketCaptureGenerator, Predicate<Pair<Duration, Integer>> stopCondition, Duration interval) {
+        this.interval = interval;
+        this.marketCaptureGenerator = marketCaptureGenerator;
+        this.flux = mktCaptures.asFlux();
+        this.stopCondidtion = stopCondition;
+    }
+
+    public Flux<MktDataCapture> getFlux() {
+        return flux;
+    }
+
+    public void start() {
+
+        final Runnable producer = new Runnable() {
+            @Override
+            public void run() {
+                if (!completed) {
+                    final boolean localComplete = stopCondidtion.test(getCriteria(marketCaptureGenerator)) ;
+                    if (localComplete) {
+                        completed = true;
+                        mktCaptures.tryEmitComplete();
+
+                    } else {
+                        List<MktDataCapture> capture = marketCaptureGenerator.next(1);
+                        capture.stream().forEach(capt -> {
+                            sent.add(capt);
+                            mktCaptures.tryEmitNext(capt);
+                        });
+                    }
+                }
+            }
+        };
+
+        scheduledExecutorService.scheduleAtFixedRate(producer, interval.toMillis(), interval.toMillis(), TimeUnit.MILLISECONDS);
+    }
+
+    static Pair<Duration, Integer> getCriteria(MarketCaptureGenerator gen) {
+        final Duration dur = Duration.between(gen.getStartTime(), LocalDateTime.now());
+        return Pair.of(dur, gen.count());
+    }
+
+    public static FluxCaptureBuilder aBuilder() {
+        return new FluxCaptureBuilder();
+    }
+
+    public List<MktDataCapture> getSent() {
+        return sent;
+    }
+
+    public static class FluxCaptureBuilder {
+        private MktDataIdentifier id = null;
+        private double initValue = 1.0;
+        private Predicate<Pair<Duration, Integer>> stopCondition = (p) -> true;
+
+        private Duration interval = Duration.ofMillis(100);
+
+
+        public MarketCaptureFluxGenerator build() {
+            MarketCaptureGenerator generator = new MarketCaptureGenerator(id, initValue);
+            return new MarketCaptureFluxGenerator(generator, stopCondition,interval);
+        }
+
+        public FluxCaptureBuilder withMarketData(MktDataIdentifier id) {
+            this.id = id;
+            return this;
+        }
+        public FluxCaptureBuilder withInterval(Duration duration){
+            this.interval = duration;
+            return this;
+        }
+
+
+        public FluxCaptureBuilder stoppingAfterDurationOf(Duration limit) {
+            this.stopCondition = (pair) -> pair.getLeft().compareTo(limit) >= 0;
+            return this;
+        }
+
+        public FluxCaptureBuilder stoppingAfterCount(Integer max) {
+            this.stopCondition = (pair) -> pair.getRight().compareTo(max) > 0;
+            return this;
+        }
+
+
+    }
+}
