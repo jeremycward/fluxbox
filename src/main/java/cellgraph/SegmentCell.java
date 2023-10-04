@@ -2,8 +2,6 @@ package cellgraph;
 
 import cellgraph.mutations.CellMutation;
 import cellgraph.mutations.MktDataCapture;
-import demo.Action;
-import demo.BaseCellImpl;
 
 import java.util.List;
 import java.util.stream.Collectors;

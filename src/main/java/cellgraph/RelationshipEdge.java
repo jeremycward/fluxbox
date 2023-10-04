@@ -1,5 +1,7 @@
 package cellgraph;
 
+import org.jgrapht.graph.DefaultEdge;
+
 public class RelationshipEdge extends DefaultEdge {
     private String label;
 

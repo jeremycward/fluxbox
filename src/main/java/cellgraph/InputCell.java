@@ -1,8 +1,5 @@
 package cellgraph;
 
-import demo.Action;
-import demo.BaseCellImpl;
-
 
 
 public class InputCell extends BaseCellImpl<Integer> {

@@ -1,9 +1,5 @@
 package cellgraph;
-
-import demo.Action;
-import demo.Cell;
-import demo.RelationshipEdge;
-import org.apache.commons.lang3.tuple.Pair;
+import graphql.util.Pair;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.nio.Attribute;
@@ -13,7 +9,6 @@ import org.jgrapht.nio.dot.DOTExporter;
 import org.jgrapht.nio.graphml.GraphMLExporter;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import reactor.core.publisher.Flux;
-
 import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +28,7 @@ public class CellGraph {
         List<Cell> inputNodes = graph.vertexSet().stream().filter(this::isBaseCell).collect(Collectors.toUnmodifiableList());
         List<Cell> outputNode = graph.vertexSet().stream().filter(this::isLeafCell).collect(Collectors.toUnmodifiableList());
         if (inputNodes.size() == 1 && outputNode.size() == 1) {
-            return Pair.of(inputNodes.get(0), outputNode.get(0));
+            return Pair.pair(inputNodes.get(0), outputNode.get(0));
         } else {
             throw new IllegalArgumentException(String.format("Incorrect number of input and output points : in [%s] out [%s]",inputNodes.size(),outputNode.size()));
         }
@@ -41,7 +36,7 @@ public class CellGraph {
     }
     public  Flux<Action> connect(Flux<Action> input){
         Pair<Cell,Cell> linkPoints = findLinkPoints();
-        Cell inputCell = linkPoints.getLeft();
+        Cell inputCell = linkPoints.first;
         Iterator<Cell<String>> iterator = new BreadthFirstIterator(graph,inputCell);
         CellConnector cc = new CellConnector(graph);
         Flux<Action> currentFlux = input;

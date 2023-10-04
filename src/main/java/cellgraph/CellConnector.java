@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
+import org.jgrapht.Graph;
 public class CellConnector {
     private final Graph gr;
     private static final Logger logger = Logger.getLogger(CellConnector.class.getName());
