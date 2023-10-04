@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class CellConnector {
-    private final Gr    aph gr;
+    private final Graph gr;
     private static final Logger logger = Logger.getLogger(CellConnector.class.getName());
 
     Function<Object[], ?  extends Action> combinerFunc = (Object[] in)->
