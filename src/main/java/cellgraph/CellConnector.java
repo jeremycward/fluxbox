@@ -32,7 +32,7 @@ public class CellConnector {
         return retVal;
     }
     private List<Flux<Action>> feedersOf(Cell it){
-        Set<RelationshipEdge> incoming = gr.incomingEdgesOf(it);
+        Set<DependencyEdge> incoming = gr.incomingEdgesOf(it);
         return
         incoming.stream().map(edge->gr.getEdgeSource(edge))
                 .map(Cell.class::cast)

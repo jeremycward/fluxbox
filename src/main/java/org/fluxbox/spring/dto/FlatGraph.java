@@ -6,9 +6,16 @@ public class FlatGraph {
     List<Vertex> vertices;
     List<Edge> edges;
 
-    public FlatGraph(List<Vertex> vertices, List<Edge> edges) {
+    Integer matrixHeight;
+    Integer matrixWidth;
+
+
+    public FlatGraph(List<Vertex> vertices, List<Edge> edges, Integer matrixHeight, Integer matrixWidth) {
         this.vertices = vertices;
-        this.edges = edges;
+        this.edges =edges;
+        this.matrixHeight = matrixHeight;
+        this.matrixWidth = matrixWidth;
+
     }
 
     public List<Vertex> getVertices() {
@@ -17,5 +24,13 @@ public class FlatGraph {
 
     public List<Edge> getEdges() {
         return edges;
+    }
+
+    public Integer getMatrixHeight() {
+        return matrixHeight;
+    }
+
+    public Integer getMatrixWidth() {
+        return matrixWidth;
     }
 }

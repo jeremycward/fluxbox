@@ -1,12 +1,18 @@
 package org.fluxbox.spring.dto;
 
 
+import graphql.schema.FieldCoordinates;
+
 import java.util.List;
 
 public class Vertex {
     private final String id;
     private final String name;
+
+
     private final String caption;
+
+
 
     private final List<Attribute> attributes;
 

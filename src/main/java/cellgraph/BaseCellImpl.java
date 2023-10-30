@@ -22,6 +22,11 @@ abstract public class BaseCellImpl<T> implements Cell<T> {
     }
 
     @Override
+    public String getCaption() {
+        return getId();
+    }
+
+    @Override
     public String getId() {
         return id;
     }

@@ -3,6 +3,10 @@ package cellgraph;
 
 public class OutputCell extends BaseCellImpl<Integer> {
     public static final String OUTPUT_CELL_ID = java.util.UUID.randomUUID().toString();
+    @Override
+    public String getCaption() {
+        return "OUTPUT";
+    }
 
     @Override
     public Action process(Action input) {

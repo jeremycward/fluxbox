@@ -1,0 +1,55 @@
+{
+  "data": {
+    "flatGraph": {
+      "vertices": [
+        {
+          "name": "name_1",
+          "caption": "caption_1",
+          "attributes": [
+            {
+              "name": "cellType",
+              "value": "SegmentCell"
+            },
+            {
+              "name": "matrix_x_pos",
+              "value": "9"
+            },
+            {
+              "name": "matrix_y_pos",
+              "value": "0"
+            }
+          ],
+          "id": "id_1"
+        },
+        {
+          "name": "name_2",
+          "caption": "caption_2",
+          "attributes": [
+            {
+              "name": "cellType",
+              "value": "MktDataCell"
+            },
+            {
+              "name": "matrix_x_pos",
+              "value": "9"
+            },
+            {
+              "name": "matrix_y_pos",
+              "value": "0"
+            }
+          ],
+          "id": "id_2"
+        }
+      ],
+      "edges": [
+        {
+          "name": "edge_1_name",
+          "caption": "edge_1_caption",
+          "from": "id_1",
+          "to": "id_2",
+          "id": "id_edge_1"
+        }
+      ]
+    }
+  }
+}

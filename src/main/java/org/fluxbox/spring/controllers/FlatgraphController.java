@@ -11,6 +11,6 @@ import java.util.List;
 public class FlatgraphController {
     @QueryMapping
     public FlatGraph flatGraph(){
-        return SampleGraphs.twoNodeGraph();
+        return SampleGraphs.majorCcyGraph();
     }
 }
