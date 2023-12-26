@@ -26,7 +26,7 @@ class CellGraphTest {
                 .filter(it->it.getName().equals("matrix_y_pos")).findFirst().get().getValue()
         );
 
-        Vertex last = fg.getVertices().getLast();
+        Vertex last = fg.getVertices().get(fg.getVertices().size()-1);
         assertEquals("9",last.getAttributes().stream()
                 .filter(it->it.getName().equals("matrix_x_pos")).findFirst().get().getValue()
         );

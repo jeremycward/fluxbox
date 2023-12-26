@@ -4,6 +4,7 @@ schema {
 }
 type Query {
     flatGraph: FlatGraph
+    flatGraphConnectedTo(id: String): FlatGraph
 }
 type FlatGraph {
     edges: [Edge]!

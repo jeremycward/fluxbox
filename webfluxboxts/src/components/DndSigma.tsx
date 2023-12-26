@@ -58,22 +58,18 @@ export const DragNdropLoaded: FC = () => {
           }
         },
         touchdown: (e:any) => {
-          // Disable the autoscale at the first down interaction
+
           if (!sigma.getCustomBBox()) sigma.setCustomBBox(sigma.getBBox());
         },
         touchmove: (e:any) => {
           if (draggedNode) {
-            // Get new position of node
-
-            // const pos = sigma.viewportToGraph(e);
-            // sigma.getGraph().setNodeAttribute(draggedNode, "x", pos.x);
-            // sigma.getGraph().setNodeAttribute(draggedNode, "y", pos.y);
-
-            // Prevent sigma to move camera:
-            //e.preventSigmaDefault();
             e.original.preventDefault();
             e.original.stopPropagation();
           }
+        },
+        clickNode: (e:any) =>{
+          console.log("clicked")
+
         },
       });
     }, [registerEvents, sigma, draggedNode]);

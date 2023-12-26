@@ -26,7 +26,7 @@ export function parseResults(props: any): Graph {
         const cellTypeColor= colorTypeMap.get(cellType)
 
 
-        gr.addNode(vtx.id, { x: xPos, y: yPos , label: vtx.caption, size: 10, color: cellTypeColor })
+        gr.addNode(vtx.id, { x: xPos, y: yPos , label: vtx.caption, size: 15, color: cellTypeColor, attrMap : {"selected" : true} })
     })
     props.edges.forEach((edge: any) => {
         gr.addEdge(edge.from, edge.to, {
