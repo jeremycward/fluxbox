@@ -1,5 +1,6 @@
 package org.fluxbox.fluxbox.defaultImpl;
 
+import org.fluxbox.example.model.ModelWrapper;
 import org.fluxbox.fluxbox.FluxboxMsg;
 import org.fluxbox.fluxbox.InTray;
 import org.fluxbox.fluxbox.MsgTypeNotAccepted;
@@ -8,17 +9,17 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 
-public class DefaultInTray<T extends FluxboxMsg> implements InTray<T> {
+public class DefaultInTray implements InTray<FluxboxMsg> {
 
     private final String fluxboxName;
 
-    private final SequentialSink<T> sequentialSink = new SequentialSink<>();
+    private final SequentialSink<org.fluxbox.fluxbox.FluxboxMsg> sequentialSink = new SequentialSink<>();
 
-    private final List<Class<T>> supportedMsgTypes;
+    private final List<Class> supportedMsgTypes;
 
-    public DefaultInTray(String fluxboxName, List<Class<T>> supportedMsgTypes) {
+    public DefaultInTray(String fluxboxName, ModelWrapper<?> wrapper) {
         this.fluxboxName = fluxboxName;
-        this.supportedMsgTypes = supportedMsgTypes;
+        this.supportedMsgTypes = wrapper.supportedMesssageTypes();
 
     }
 
@@ -28,19 +29,14 @@ public class DefaultInTray<T extends FluxboxMsg> implements InTray<T> {
         }else{
             throw new MsgTypeNotAccepted();
         }
-
-
     }
 
-    public List<Class<T>> supportedMessageTypes() {
+    public List<Class> supportedMessageTypes() {
         return List.copyOf(supportedMsgTypes);
     }
 
-    public String getFluxboxName() {
-        return fluxboxName;
-    }
 
-    public Flux<T> getInputFlux() {
+    public Flux<FluxboxMsg> getInputFlux() {
         return sequentialSink.getInputFlux();
     }
 }
