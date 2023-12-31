@@ -60,7 +60,6 @@ class DefaultFluxboxTest {
             }
         }));
 
-
        List<FluxboxMsg> recording = new ArrayList<>(testBatchSize);
         StepVerifier.create(fluxbox.getOutTray().getOutFlux())
                 .recordWith(()->recording)
@@ -77,12 +76,4 @@ class DefaultFluxboxTest {
         }
 
     }
-
-
-
-
-
-
-
-
 }
